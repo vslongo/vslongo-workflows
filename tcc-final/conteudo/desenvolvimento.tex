@@ -6,7 +6,7 @@ Este capítulo documenta o sistema desenvolvido. A Seção \ref{sec:apresentacao
 \section{Apresentação do Sistema}
 \label{sec:apresentacao}
 
-O sistema desenvolvido é um conjunto de dois fluxos de automação executados na plataforma n8n, apoiados por um servidor de modelos de linguagem local. O \textbf{fluxo de validação} percorre uma pasta do Google Drive com os planos de ensino em PDF, extrai e segmenta o texto de cada plano, solicita ao modelo de linguagem a avaliação dos critérios, aplica regras determinísticas sobre a resposta e grava o resultado em uma planilha do Google Sheets, uma linha por plano. O \textbf{fluxo do \textit{dashboard}} lê essa planilha e gera, a cada acesso, uma página HTML com os indicadores do lote e o detalhamento de cada plano.
+O sistema desenvolvido é um conjunto de dois fluxos de automação executados na plataforma n8n, apoiados por um servidor de modelos de linguagem local. O fluxo de validação percorre uma pasta do Google Drive com os planos de ensino em PDF, extrai e segmenta o texto de cada plano, solicita ao modelo de linguagem a avaliação dos critérios, aplica regras determinísticas sobre a resposta e grava o resultado em uma planilha do Google Sheets, uma linha por plano. O fluxo do \textit{dashboard} lê essa planilha e gera, a cada acesso, uma página HTML com os indicadores do lote e o detalhamento de cada plano.
 
 A Figura \ref{fig:arquitetura} apresenta a arquitetura da solução. Os dois serviços próprios, n8n e Ollama, são executados em contêineres Docker orquestrados por um arquivo Docker Compose e se comunicam por uma rede interna. O Ollama tem acesso à GPU do computador hospedeiro, onde o modelo Qwen2.5 é carregado. Google Drive e Google Sheets são serviços externos acessados por OAuth 2.0: o primeiro funciona como repositório de entrada, onde a coordenação deposita os planos; o segundo, como base de dados dos resultados, o que permite consultá-los e exportá-los com ferramentas já conhecidas pelos usuários.
 
@@ -18,7 +18,7 @@ A Figura \ref{fig:arquitetura} apresenta a arquitetura da solução. Os dois ser
 \legend{Fonte: Elaborado pelo autor (2026).}
 \end{figure}
 
-Três princípios orientaram o projeto. O primeiro é a \textbf{divisão de trabalho entre regras e modelo}: o que pode ser verificado de forma exata, como contar referências, é feito por código, e o LLM é reservado aos julgamentos que exigem interpretação. O segundo é a \textbf{verificabilidade}: cada critério recebe um status de um conjunto fechado e uma observação curta, e o \textit{dashboard} oferece acesso direto ao PDF original. O terceiro é o \textbf{controle humano}: o sistema faz uma triagem e não toma decisões, cabendo à coordenação e ao NDE confirmar ou descartar cada apontamento.
+Três princípios orientaram o projeto. O primeiro é a divisão de trabalho entre regras e modelo: o que pode ser verificado de forma exata, como contar referências, é feito por código, e o LLM é reservado aos julgamentos que exigem interpretação. O segundo é a verificabilidade: cada critério recebe um status de um conjunto fechado e uma observação curta, e o \textit{dashboard} oferece acesso direto ao PDF original. O terceiro é o controle humano: o sistema faz uma triagem e não toma decisões, cabendo à coordenação e ao NDE confirmar ou descartar cada apontamento.
 
 \section{Metodologia de desenvolvimento de software}
 \label{sec:processo}
@@ -135,14 +135,14 @@ US3 & Administrador técnico & Instala e mantém a infraestrutura, configura cre
 Além do que cada ator pode fazer, é preciso definir como o sistema deve decidir. As regras de negócio orientam e controlam esse comportamento. Elas derivam da Organização Didática \cite{ifc2022}, das orientações da coordenação e das decisões tomadas durante as iterações:
 
 \begin{itemize}
-    \item \textbf{RN01} -- Cada critério recebe exatamente um status entre OK, INCOMPLETO e AUSENTE; havendo conteúdo relacionado ao critério, o status AUSENTE não deve ser usado.
-    \item \textbf{RN02} -- O plano é REPROVADO se algum critério estiver AUSENTE; PENDENTE se algum estiver INCOMPLETO e nenhum AUSENTE; e OK se todos estiverem OK.
-    \item \textbf{RN03} -- O critério de referências é conforme somente com no mínimo 3 referências básicas e 5 complementares, contadas pelo sistema e não pelo modelo.
-    \item \textbf{RN04} -- Os critérios de objetivo geral e de objetivos específicos são conformes quando possuem texto preenchido, independentemente da redação.
-    \item \textbf{RN05} -- Os procedimentos de avaliação não são considerados incompletos pela ausência de menção à interdisciplinaridade.
-    \item \textbf{RN06} -- A avaliação de cada critério deve se basear apenas no texto do plano, sem inferência de informações ausentes.
-    \item \textbf{RN07} -- O status calculado pelo sistema é indicativo; a decisão sobre o plano cabe à coordenação e ao NDE.
-    \item \textbf{RN08} -- Uma falha técnica na avaliação de um plano gera o status ERRO, com o motivo registrado, e o plano deve ser reavaliado em nova execução.
+    \item RN01 -- Cada critério recebe exatamente um status entre OK, INCOMPLETO e AUSENTE; havendo conteúdo relacionado ao critério, o status AUSENTE não deve ser usado.
+    \item RN02 -- O plano é REPROVADO se algum critério estiver AUSENTE; PENDENTE se algum estiver INCOMPLETO e nenhum AUSENTE; e OK se todos estiverem OK.
+    \item RN03 -- O critério de referências é conforme somente com no mínimo 3 referências básicas e 5 complementares, contadas pelo sistema e não pelo modelo.
+    \item RN04 -- Os critérios de objetivo geral e de objetivos específicos são conformes quando possuem texto preenchido, independentemente da redação.
+    \item RN05 -- Os procedimentos de avaliação não são considerados incompletos pela ausência de menção à interdisciplinaridade.
+    \item RN06 -- A avaliação de cada critério deve se basear apenas no texto do plano, sem inferência de informações ausentes.
+    \item RN07 -- O status calculado pelo sistema é indicativo; a decisão sobre o plano cabe à coordenação e ao NDE.
+    \item RN08 -- Uma falha técnica na avaliação de um plano gera o status ERRO, com o motivo registrado, e o plano deve ser reavaliado em nova execução.
 \end{itemize}
 
 \section{Histórias de Usuário}
@@ -216,7 +216,7 @@ Definidos os requisitos e os dados, esta seção apresenta os diagramas que desc
 
 \subsection{Diagramas Estruturais}
 
-A Figura \ref{fig:pipeline} apresenta a estrutura do fluxo de validação no n8n. Cada caixa corresponde a um nó do fluxo. A etapa de \textbf{aquisição} é disparada por um gatilho agendado ou manual, lista os arquivos da pasta, baixa cada arquivo, descarta os que não são PDF e extrai o texto. A etapa de \textbf{análise e registro} separa o texto em seções, prepara o \textit{prompt} e então entra em um laço controlado pelo nó \textit{Processar em blocos}: cada bloco de até dez planos é enviado ao modelo, um plano por requisição; as respostas são interpretadas e gravadas na planilha; e só então o bloco seguinte é processado. Esse laço garante que uma interrupção no meio do lote não descarte os resultados já obtidos (RNF07).
+A Figura \ref{fig:pipeline} apresenta a estrutura do fluxo de validação no n8n. Cada caixa corresponde a um nó do fluxo. A etapa de aquisição é disparada por um gatilho agendado ou manual, lista os arquivos da pasta, baixa cada arquivo, descarta os que não são PDF e extrai o texto. A etapa de análise e registro separa o texto em seções, prepara o \textit{prompt} e então entra em um laço controlado pelo nó \textit{Processar em blocos}: cada bloco de até dez planos é enviado ao modelo, um plano por requisição; as respostas são interpretadas e gravadas na planilha; e só então o bloco seguinte é processado. Esse laço garante que uma interrupção no meio do lote não descarte os resultados já obtidos (RNF07).
 
 \begin{figure}[htbp]
 \centering
@@ -323,4 +323,4 @@ O plano P05, expandido na figura, ilustra o uso pretendido: o avaliador vê imed
 \section{Testes}
 \label{sec:testes}
 
-Para garantir que cada etapa descrita neste capítulo funcionasse como esperado ao longo das iterações, a estratégia de testes combinou três abordagens. Os \textbf{testes de execução}, feitos a cada alteração de um nó, usaram o modo de execução manual do n8n, que exibe a entrada e a saída de cada nó e permite inspecionar o resultado da extração, da segmentação, do \textit{prompt} e da resposta do modelo para um plano específico. Os \textbf{testes de regressão}, feitos ao fim de cada iteração, consistiram em processar novamente o corpus completo e comparar os resultados com os da execução anterior, verificando se a correção resolvia o problema visado sem introduzir novos erros. Por fim, a \textbf{avaliação} da versão final, segundo o protocolo da Seção \ref{sec:protocolo}, mediu robustez, desempenho e concordância. Os resultados dessas avaliações são apresentados no Capítulo \ref{cap:resultados}.
+Para garantir que cada etapa descrita neste capítulo funcionasse como esperado ao longo das iterações, a estratégia de testes combinou três abordagens. Os testes de execução, feitos a cada alteração de um nó, usaram o modo de execução manual do n8n, que exibe a entrada e a saída de cada nó e permite inspecionar o resultado da extração, da segmentação, do \textit{prompt} e da resposta do modelo para um plano específico. Os testes de regressão, feitos ao fim de cada iteração, consistiram em processar novamente o corpus completo e comparar os resultados com os da execução anterior, verificando se a correção resolvia o problema visado sem introduzir novos erros. Por fim, a avaliação da versão final, segundo o protocolo da Seção \ref{sec:protocolo}, mediu robustez, desempenho e concordância. Os resultados dessas avaliações são apresentados no Capítulo \ref{cap:resultados}.

@@ -16,14 +16,8 @@ Os resultados devem ser interpretados à luz de algumas limitações. A primeira
 \section{Trabalhos futuros}
 \label{sec:futuros}
 
-A partir dos resultados e das limitações, sugerem-se os seguintes trabalhos futuros:
+A partir dos resultados e das limitações, sugerem-se como trabalhos futuros, em primeiro lugar, a avaliação com o NDE, executando o protocolo de anotação humana de todos os critérios e calculando, por critério, precisão, \textit{recall}, $F_1$ e Kappa de Cohen, e ampliando o corpus para outros semestres e cursos. No plano técnico, a melhoria mais imediata é a detecção determinística de campos vazios e provisórios: atribuir AUSENTE por regra a seções vazias ou que contenham apenas textos provisórios do SIGAA, como ``Não Cadastrado!'' e ``A cadastrar'', eliminaria o falso negativo identificado e a instabilidade entre INCOMPLETO e AUSENTE nesses casos. Também se propõe gerar a observação geral por código, a partir dos status finais dos critérios, para eliminar as contradições observadas.
 
-\begin{itemize}
-    \item \textbf{Avaliação com o NDE}: executar o protocolo de anotação humana de todos os critérios e calcular, por critério, precisão, \textit{recall}, $F_1$ e Kappa de Cohen, ampliando o corpus para outros semestres e cursos.
-    \item \textbf{Detecção determinística de campos vazios e provisórios}: atribuir AUSENTE por regra a seções vazias ou que contenham apenas textos provisórios do SIGAA, como ``Não Cadastrado!'' e ``A cadastrar'', eliminando o falso negativo identificado e a instabilidade entre INCOMPLETO e AUSENTE nesses casos.
-    \item \textbf{Observação geral gerada por código}: produzir o resumo de cada plano a partir dos status finais dos critérios, eliminando as contradições observadas.
-    \item \textbf{RAG sobre documentos normativos extensos}: incorporar o PPC do curso e as ementas oficiais em uma base vetorial, permitindo verificar, por exemplo, se a ementa e as referências do plano correspondem às aprovadas no PPC.
-    \item \textbf{Comparação de modelos}: avaliar modelos maiores ou mais recentes, locais e externos, comparando qualidade, tempo e custo sobre o mesmo corpus.
-    \item \textbf{Integração ao fluxo institucional}: notificar automaticamente os docentes sobre os itens pendentes e integrar a validação ao momento de cadastro do plano no SIGAA, antes de sua publicação.
-    \item \textbf{Avaliação com usuários}: medir, com coordenadores, membros do NDE e docentes, a utilidade percebida, a clareza das justificativas e o tempo economizado em relação à conferência manual.
-\end{itemize}
+Em outra direção, a incorporação do PPC do curso e das ementas oficiais em uma base vetorial, por meio de RAG, permitiria verificar, por exemplo, se a ementa e as referências do plano correspondem às aprovadas no PPC. A comparação de modelos maiores ou mais recentes, locais e externos, sobre o mesmo corpus, mediria o ganho de qualidade frente ao custo e ao tempo de processamento. Por fim, do ponto de vista institucional, o sistema poderia notificar automaticamente os docentes sobre os itens pendentes e ser integrado ao momento de cadastro do plano no SIGAA, antes de sua publicação. Para isso, porém, seria preciso medir, com coordenadores, membros do NDE e docentes, a utilidade percebida, a clareza das justificativas e o tempo economizado em relação à conferência manual.
+
+O código-fonte do sistema, os fluxos do n8n, os scripts de análise e os dados desta avaliação estão disponíveis no repositório \texttt{https://github.com/vslongo/vslongo-workflows}.
