@@ -1,0 +1,4 @@
+planos/*
+!planos/.gitkeep
+resultados/*
+!resultados/.gitkeep

@@ -14,8 +14,12 @@ services:
       - TZ=America/Sao_Paulo
       # Code node com retentativas ao Ollama pode passar de 300s por bloco
       - N8N_RUNNERS_TASK_TIMEOUT=1800
+      # Nós de arquivo só enxergam /data (PDFs de entrada e resultados)
+      - N8N_RESTRICT_FILE_ACCESS_TO=/data
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./planos:/data/planos:ro
+      - ./resultados:/data/resultados
     depends_on:
       - ollama
     networks:

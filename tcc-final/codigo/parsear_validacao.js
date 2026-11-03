@@ -100,6 +100,13 @@ for (let index = 0; index < items.length; index++) {
       'Coerência Obs': o('coerencia')
     }
   });
+  // Um JSON por plano em /data/resultados: reprocessar o mesmo PDF sobrescreve, sem duplicar
+  const linha = out[out.length - 1];
+  linha.binary = { data: {
+    data: Buffer.from(JSON.stringify(linha.json, null, 2)).toString('base64'),
+    mimeType: 'application/json',
+    fileName: fileName.replace(/\.pdf$/i, '') + '.json'
+  } };
 }
 
 return out;

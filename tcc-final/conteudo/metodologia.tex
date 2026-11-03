@@ -80,7 +80,7 @@ Servidor de inferência & Ollama 0.24.0 (contêiner \texttt{ollama/ollama}) \\
 Modelo de linguagem & Qwen2.5 7B Instruct, 7,6 bilhões de parâmetros, quantização Q4\_K\_M \\
 Parâmetros de geração & temperatura 0,1; contexto de 8.192 \textit{tokens}; máximo de 1.500 \textit{tokens} gerados \\
 Otimizações do Ollama & \textit{FlashAttention} ativado; \textit{KV cache} quantizado em 8 bits (\texttt{q8\_0}) \\
-Armazenamento & Google Drive (planos) e Google Sheets (resultados) \\ \bottomrule
+Armazenamento & Google Drive (planos) e Google Sheets (resultados) nas execuções avaliadas; pastas locais na versão final (Seção \ref{sec:apresentacao}) \\ \bottomrule
 \end{tabular}
 \legend{Fonte: Elaborado pelo autor (2026).}
 \end{table}
@@ -92,7 +92,7 @@ A temperatura de 0,1 foi escolhida para tornar as respostas praticamente determi
 
 Definidos o corpus, os critérios e o ambiente, resta descrever como o sistema foi avaliado, o que corresponde ao quarto objetivo específico. A avaliação foi organizada em quatro dimensões, cada uma com uma fonte de dados e uma medida próprias, descritas a seguir.
 
-Robustez técnica. Neste trabalho, robustez técnica é a capacidade do sistema de processar todos os planos do lote sem falhas que impeçam a avaliação, como respostas vazias, JSON inválido ou estouro do tempo limite. Ela foi medida pela proporção de planos que receberam o status ERRO em cada execução sobre o corpus, acompanhada do motivo da falha registrado pelo sistema. Como a planilha de resultados acumula todas as execuções, foi possível reconstruir a evolução dessa proporção ao longo das iterações de desenvolvimento e associar cada queda a uma correção específica.
+Robustez técnica. Neste trabalho, robustez técnica é a capacidade do sistema de processar todos os planos do lote sem falhas que impeçam a avaliação, como respostas vazias, JSON inválido ou estouro do tempo limite. Ela foi medida pela proporção de planos que receberam o status ERRO em cada execução sobre o corpus, acompanhada do motivo da falha registrado pelo sistema. Como a planilha de resultados usada durante o desenvolvimento acumulou todas as execuções, foi possível reconstruir a evolução dessa proporção ao longo das iterações de desenvolvimento e associar cada queda a uma correção específica.
 
 Desempenho computacional. Para cada requisição ao modelo, o Ollama informa o número de \textit{tokens} de entrada e de saída e o tempo gasto em cada fase. Esses metadados, preservados no histórico de execuções do n8n, foram usados para calcular o tempo de inferência por plano, a velocidade de geração em \textit{tokens} por segundo e o tempo total de processamento do lote.
 

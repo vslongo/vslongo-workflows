@@ -1,10 +1,10 @@
 return $input.all().map((item, index) => {
 const sections = item.json;
 
-// Recupera nome e id do arquivo do nó de busca (mantido no lineage do item)
-const fileMeta = $('Search files and folders').itemMatching(index)?.json || {};
-const fileName = fileMeta.name || 'arquivo_desconhecido';
-const fileLink = fileMeta.id ? `https://drive.google.com/file/d/${fileMeta.id}/view` : '';
+// Recupera o nome do arquivo lido da pasta (mantido no lineage do item)
+const fileName = $('Ler PDFs da Pasta').itemMatching(index)?.binary?.data?.fileName || 'arquivo_desconhecido';
+// Link relativo: servido pelo webhook /webhook/pdf do workflow do dashboard
+const fileLink = `pdf?arquivo=${encodeURIComponent(fileName)}`;
 
 // Limites maiores para campos que precisam ser lidos por inteiro (ex.: contar referências)
 const trunc = (str, max = 1500) => str ? str.substring(0, max) + (str.length > max ? '...' : '') : '(não preenchido)';
