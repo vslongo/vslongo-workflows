@@ -18,11 +18,11 @@ Também compila no Overleaf: envie a pasta inteira e use `main.tex` como documen
 | `figuras/` | Diagramas e gráficos em TikZ/pgfplots (editáveis) |
 | `images/` | Print do dashboard (anonimizado) e gráfico de publicações |
 | `codigo/` | Código dos nós do n8n, reproduzido nos apêndices |
-| `dados/` | Resultado anonimizado da execução de 19/10/2026, planilha de anotação humana e `analise.py` |
+| `dados/` | Resultados anonimizados das execuções de 19/10/2026 (2024/1) e 04/11/2026 (2024/1 a 2025/2), planilha de anotação humana, `analise.py` e `analise_semestres.py` |
 
 ## Antes de entregar
 
-- Preencher a folha de aprovação (data da defesa e banca) em `pretextuais/folhadeaprovacao.tex`.
+- Preencher a folha de aprovação (data da defesa) em `pretextuais/folhadeaprovacao.tex`.
 - Revisar dedicatória e agradecimentos (texto-base).
 - Se for usar a folha de autorização, preencher matrícula e CPF em `pretextuais/folhadeautorizacao.tex` e descomentar no `main.tex`.
 - Se o NDE anotar os critérios, rodar `python dados/analise.py dados/anotacao_humana.csv` e atualizar o Capítulo 5.

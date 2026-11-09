@@ -1,0 +1,212 @@
+% =====================================================================
+%  beamerthemeIFCVideira.sty
+%  Tema Beamer institucional para apresentações de TCC
+%  Bacharelado em Ciência da Computação — IFC Campus Videira
+%
+%  Uso:   \documentclass[aspectratio=169,xcolor=table]{beamer}
+%         \usetheme{IFCVideira}
+%  Comandos do tema:
+%         \orientador{...}  \coorientador{...}  \local{...}
+%         \capa                         -> slide de capa
+%         \secao[descrição]{Título}     -> seção + divisor automático
+%         \encerramento{contato}        -> slide final
+%         \fonte{...}                   -> linha "Fonte:" sob figuras/tabelas
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeIFCVideira}[2026/11/04 Tema TCC BCC IFC Videira]
+
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{listings,skins}
+\RequirePackage{listings}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\graphicspath{{figuras/}}
+
+% ---------- Fonte (Open Sans, se disponível) ----------
+\IfFileExists{opensans.sty}{%
+  \RequirePackage[default,scale=0.95]{opensans}%
+}{}
+\usefonttheme{professionalfonts}
+\usefonttheme{structurebold}
+
+% ---------- Cores institucionais (Manual de Identidade Visual IF) ----------
+\definecolor{ifcverde}{HTML}{349A46}
+\definecolor{ifcvermelho}{HTML}{CA2027}
+\definecolor{ifcescuro}{HTML}{16241B}
+\definecolor{ifctexto}{HTML}{1D1D1E}
+\definecolor{ifcclaro}{HTML}{EEF4EF}
+\definecolor{ifcverdeclaro}{HTML}{7BC48A}
+\definecolor{ifcverdeesc}{HTML}{1F6E33}
+\definecolor{ifccinza}{HTML}{5B6B62}
+\definecolor{ifcamarelo}{HTML}{E0A526}
+
+\setbeamercolor{normal text}{fg=ifctexto,bg=white}
+\setbeamercolor{structure}{fg=ifcverde}
+\setbeamercolor{alerted text}{fg=ifcvermelho}
+\setbeamercolor{example text}{fg=ifcverdeesc}
+\setbeamercolor{frametitle}{fg=ifcescuro}
+\setbeamercolor{block title}{fg=ifcverdeesc,bg=ifcclaro}
+\setbeamercolor{block body}{fg=ifctexto,bg=ifcclaro}
+\setbeamercolor{block title alerted}{fg=white,bg=ifcvermelho}
+\setbeamercolor{block body alerted}{fg=ifctexto,bg=ifcvermelho!8}
+\setbeamercolor{block title example}{fg=white,bg=ifcverde}
+\setbeamercolor{block body example}{fg=ifctexto,bg=ifcclaro}
+\setbeamercolor{caption name}{fg=ifctexto}
+\setbeamercolor{bibliography entry author}{fg=ifctexto}
+\setbeamercolor{bibliography entry title}{fg=ifctexto}
+\setbeamercolor{bibliography entry location}{fg=ifctexto}
+\setbeamercolor{bibliography entry note}{fg=ifctexto}
+
+% ---------- Dimensões e fontes ----------
+\setbeamersize{text margin left=0.72cm,text margin right=0.72cm}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{block title}{size=\normalsize,series=\bfseries}
+\setbeamerfont{caption}{size=\scriptsize}
+\setbeamerfont{caption name}{series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{~--~}
+\setbeamertemplate{bibliography item}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{frametitle continuation}{}
+\setbeamertemplate{footline}{\vspace*{0.95cm}} % reserva espaço do rodapé
+
+% ---------- Marcadores (quadrados arredondados do símbolo IF) ----------
+\setbeamertemplate{itemize item}{%
+  \raisebox{0.12ex}{\tikz\fill[ifcverde,rounded corners=0.7pt] (0,0) rectangle (0.17cm,0.17cm);}}
+\setbeamertemplate{itemize subitem}{%
+  \raisebox{0.15ex}{\tikz\fill[ifcverdeclaro,rounded corners=0.5pt] (0,0) rectangle (0.12cm,0.12cm);}}
+\setbeamertemplate{itemize subsubitem}{\textcolor{ifccinza}{--}}
+\setbeamertemplate{enumerate item}{%
+  \tikz[baseline=(n.base)]\node[fill=ifcverde,text=white,rounded corners=1.2pt,
+    inner sep=0pt,minimum size=1.35em,font=\scriptsize\bfseries](n){\insertenumlabel};}
+\setlength{\leftmargini}{1.6em}
+
+% ---------- Título do slide ----------
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.35cm}%
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par}%
+  \ifx\insertframesubtitle\@empty\else
+    {\small\color{ifccinza}\insertframesubtitle\par}%
+  \fi
+  \vspace*{0.15cm}}
+
+% ---------- Metadados extras ----------
+\def\IFC@orientador{Orientador(a): Prof(a). Nome Completo}
+\def\IFC@coorientador{}
+\def\IFC@local{Videira (SC)}
+\def\IFC@secdesc{}
+\newcommand{\orientador}[1]{\def\IFC@orientador{Orientador(a): #1}}
+\newcommand{\coorientador}[1]{\def\IFC@coorientador{Coorientador(a): #1}}
+\newcommand{\local}[1]{\def\IFC@local{#1}}
+\def\IFC@curso{Bacharelado em Ciência da Computação}
+\def\IFC@campus{Instituto Federal Catarinense — Campus Videira}
+
+% ---------- Fundos (capa, seção, conteúdo, encerramento) ----------
+\def\IFC@modo{conteudo}
+\newcommand{\IFC@padrao}[1][1]{%
+  \node[anchor=north east,inner sep=0,opacity=#1] at (15.78,8.46)
+    {\includegraphics[height=7.92cm]{padrao}};}
+\newcommand{\IFC@logo}{%
+  \node[anchor=north west,inner sep=0] at (0.72,8.34)
+    {\includegraphics[height=0.74cm]{logo-ifc}};}
+\newcommand{\IFC@linhacurso}{%
+  \node[anchor=west,inner sep=0,text=ifccinza,font=\scriptsize] at (0.72,0.95)
+    {\IFC@curso\ $\cdot$ \IFC@campus};}
+
+\setbeamertemplate{background}{%
+  \begin{tikzpicture}[x=1cm,y=1cm]
+    \useasboundingbox (0,0) rectangle (\the\paperwidth,\the\paperheight);
+    \def\IFC@tmp{capa}\ifx\IFC@modo\IFC@tmp
+      \IFC@padrao \IFC@logo \IFC@linhacurso
+      \node[anchor=north west,inner sep=0,text=ifcverdeesc,font=\scriptsize\bfseries]
+        at (0.72,6.78) {\addfontfeature{LetterSpace=10}TRABALHO DE CONCLUSÃO DE CURSO};
+      \node[anchor=north west,inner sep=0,text=ifcescuro,text width=10.3cm,align=left,
+        font=\LARGE\bfseries] at (0.72,6.3) {\inserttitle};
+      \node[anchor=north west,inner sep=0,text=ifctexto,text width=10.3cm,
+        font=\large\bfseries] at (0.72,3.62) {\insertauthor};
+      \node[anchor=north west,inner sep=0,text=ifccinza,text width=10.3cm,align=left,
+        font=\small] at (0.72,2.98) {\IFC@orientador\ifx\IFC@coorientador\@empty\else\\\IFC@coorientador\fi};
+      \node[anchor=north west,inner sep=0,text=ifccinza,font=\footnotesize]
+        at (0.72,1.82) {\IFC@local, \insertdate};
+    \fi
+    \def\IFC@tmp{secao}\ifx\IFC@modo\IFC@tmp
+      \IFC@padrao
+      \node[anchor=south west,inner sep=0] at (0.72,0.38)
+        {\includegraphics[height=0.5cm]{logo-ifc}};
+      \node[anchor=south west,inner sep=0,text=ifcverde,font=\fontsize{40}{42}\selectfont\bfseries]
+        at (0.62,5.12) {\ifnum\value{section}<10 0\fi\arabic{section}};
+      \node[anchor=north west,inner sep=0,text=ifcescuro,text width=11cm,align=left,
+        font=\huge\bfseries] at (0.72,4.75) {\insertsectionhead};
+      \node[anchor=north west,inner sep=0,text=ifccinza,text width=11cm,align=left,
+        font=\normalsize] at (0.72,3.25) {\IFC@secdesc};
+    \fi
+    \def\IFC@tmp{encerramento}\ifx\IFC@modo\IFC@tmp
+      \IFC@padrao \IFC@logo \IFC@linhacurso
+      \node[anchor=south west,inner sep=0,text=ifcescuro,font=\fontsize{30}{32}\selectfont\bfseries]
+        at (0.72,4.6) {\IFC@agradecimento};
+      \node[anchor=north west,inner sep=0,text=ifctexto,text width=10.3cm,align=left,
+        font=\normalsize] at (0.72,4.25) {\IFC@contato};
+    \fi
+    \def\IFC@tmp{conteudo}\ifx\IFC@modo\IFC@tmp
+      \node[anchor=south west,inner sep=0] at (0.72,0.38)
+        {\includegraphics[height=0.43cm]{logo-ifc}};
+      \node[anchor=west,inner sep=0,text=ifccinza,font=\tiny] at (2.7,0.6)
+        {\IFC@curso\ \ $\cdot$\ \ Campus Videira};
+      \node[anchor=east,inner sep=0,text=ifccinza,font=\scriptsize] at (15.28,0.6)
+        {\insertframenumber};
+    \fi
+  \end{tikzpicture}}
+
+% \addfontfeature só existe com fontspec; em pdfLaTeX vira no-op
+\providecommand{\addfontfeature}[1]{}
+
+% ---------- Comandos de slides especiais ----------
+\newcommand{\capa}{%
+  \gdef\IFC@modo{capa}%
+  \begin{frame}[plain,noframenumbering]\end{frame}%
+  \gdef\IFC@modo{conteudo}}
+
+\newcommand{\secao}[2][]{%
+  \gdef\IFC@secdesc{#1}\section{#2}}
+\AtBeginSection[]{%
+  \gdef\IFC@modo{secao}%
+  \begin{frame}[plain]\end{frame}%
+  \gdef\IFC@modo{conteudo}}
+
+\def\IFC@agradecimento{Obrigado(a)!}
+\def\IFC@contato{}
+\newcommand{\encerramento}[2][Obrigado(a)!]{%
+  \gdef\IFC@agradecimento{#1}\gdef\IFC@contato{#2}%
+  \gdef\IFC@modo{encerramento}%
+  \begin{frame}[plain,noframenumbering]\end{frame}%
+  \gdef\IFC@modo{conteudo}}
+
+% ---------- Utilidades ----------
+\newcommand{\fonte}[1]{\par\vspace{2pt}{\scriptsize\color{ifccinza}Fonte: #1\par}}
+
+\newtcolorbox{cartao}[1][]{enhanced,colback=ifcclaro,colframe=ifcclaro,arc=2mm,
+  boxrule=0pt,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  fonttitle=\bfseries\color{ifcverdeesc},coltitle=ifcverdeesc,colbacktitle=ifcclaro,
+  attach title to upper={\par\smallskip},halign upper=left,#1}
+
+\lstdefinestyle{ifc}{
+  basicstyle=\ttfamily\footnotesize\color{white},
+  keywordstyle=\color{ifcverdeclaro}\bfseries,
+  commentstyle=\color{ifcclaro!60!ifccinza}\itshape,
+  stringstyle=\color{ifcamarelo},
+  numberstyle=\tiny\color{ifccinza},
+  showstringspaces=false, columns=fullflexible, keepspaces=true,
+  breaklines=true, tabsize=4,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {ã}{{\~a}}1 {õ}{{\~o}}1 {ç}{{\c c}}1 {â}{{\^a}}1 {ê}{{\^e}}1 {ô}{{\^o}}1
+}
+\newtcblisting{codigo}[1][]{enhanced,listing only,colback=ifcescuro,colframe=ifcescuro,
+  arc=2mm,boxrule=0pt,left=3mm,right=3mm,top=2mm,bottom=2mm,
+  listing options={style=ifc,#1}}
+
+\endinput

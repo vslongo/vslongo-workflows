@@ -1,0 +1,24 @@
+% Dados: dados/validacoes_2026-11-04.csv (execução de 04/11/2026, 120 planos)
+\begin{tikzpicture}
+\begin{axis}[
+  ybar stacked,
+  width=13cm, height=7cm,
+  bar width=30pt,
+  ymin=0, ymax=36,
+  ylabel={Número de planos},
+  symbolic x coords={2024/1,2024/2,2025/1,2025/2},
+  xtick=data,
+  xticklabels={{2024/1 (n = 29)},{2024/2 (n = 34)},{2025/1 (n = 29)},{2025/2 (n = 28)}},
+  nodes near coords={\pgfmathprintnumber{\pgfplotspointmeta}},
+  nodes near coords style={font=\scriptsize},
+  ticklabel style={font=\scriptsize},
+  label style={font=\footnotesize},
+  legend style={at={(0.5,-0.15)}, anchor=north, legend columns=3, font=\scriptsize, draw=none},
+  enlarge x limits=0.2,
+]
+\addplot[fill=black!15, draw=black] coordinates {(2024/1,11) (2024/2,12) (2025/1,5) (2025/2,8)};
+\addplot[fill=black!45, draw=black] coordinates {(2024/1,4) (2024/2,8) (2025/1,5) (2025/2,4)};
+\addplot[fill=black!85, draw=black, nodes near coords style={font=\scriptsize, text=white}] coordinates {(2024/1,14) (2024/2,14) (2025/1,19) (2025/2,16)};
+\legend{OK, PENDENTE, REPROVADO}
+\end{axis}
+\end{tikzpicture}

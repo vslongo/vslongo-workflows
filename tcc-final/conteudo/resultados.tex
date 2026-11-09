@@ -1,7 +1,7 @@
 \chapter{AVALIAÇÃO E RESULTADOS}
 \label{cap:resultados}
 
-Este capítulo apresenta e discute os resultados obtidos segundo o protocolo da Seção \ref{sec:protocolo}. A Seção \ref{sec:res-robustez} analisa a robustez técnica ao longo das iterações, a Seção \ref{sec:res-desempenho} trata do desempenho computacional, a Seção \ref{sec:res-corpus} apresenta os resultados da validação dos 29 planos, a Seção \ref{sec:res-oraculo} mede a concordância com o oráculo estrutural e a Seção \ref{sec:res-erros} analisa os erros do sistema. A Seção \ref{sec:res-discussao} discute os resultados em conjunto. Salvo indicação contrária, os números referem-se à execução da versão final, realizada em 19 de outubro de 2026.
+Este capítulo apresenta e discute os resultados obtidos segundo o protocolo da Seção \ref{sec:protocolo}. A Seção \ref{sec:res-robustez} analisa a robustez técnica ao longo das iterações, a Seção \ref{sec:res-desempenho} trata do desempenho computacional, a Seção \ref{sec:res-corpus} apresenta os resultados da validação dos 29 planos, a Seção \ref{sec:res-oraculo} mede a concordância com o oráculo estrutural e a Seção \ref{sec:res-erros} analisa os erros do sistema. A Seção \ref{sec:res-semestres} amplia a avaliação para os 120 planos de quatro semestres, de 2024/1 a 2025/2, e a Seção \ref{sec:res-discussao} discute os resultados em conjunto. Salvo indicação contrária, os números das Seções \ref{sec:res-robustez} a \ref{sec:res-erros} referem-se à execução da versão final sobre os planos de 2024/1, realizada em 19 de outubro de 2026.
 
 \section{Robustez técnica ao longo das iterações}
 \label{sec:res-robustez}
@@ -154,6 +154,56 @@ Foi identificado um falso negativo: o objetivo geral do plano P05 foi considerad
 
 Por fim, a análise revelou um problema de consistência na observação geral, o resumo em uma frase produzido pelo modelo. Em 18 dos 24 planos cujo critério de referências foi considerado conforme, a observação geral mencionava algum problema com as referências, como ``faltam referências básicas''. A contradição ocorre porque a observação geral é escrita pelo modelo antes da aplicação das regras determinísticas, e o modelo, mesmo recebendo a contagem verificada, tende a comentar as referências de forma equivocada. Embora não altere nenhum status, a contradição aparece no \textit{dashboard} e pode confundir o avaliador. A correção indicada é gerar a observação geral por código, a partir dos status finais dos critérios.
 
+\section{Ampliação para quatro semestres}
+\label{sec:res-semestres}
+
+As seções anteriores avaliaram o sistema em profundidade sobre os planos de 2024/1. Para verificar se o comportamento se mantém em outros semestres e observar a evolução da conformidade dos planos ao longo do tempo, a versão final, já com armazenamento local, foi executada em 4 de novembro de 2026 sobre os planos dos semestres 2024/1, 2024/2, 2025/1 e 2025/2, disponibilizados pelo orientador em uma pasta compartilhada. A pasta continha 126 arquivos. Seis deles, de 2024/2 a 2025/2, são documentos digitalizados, sem camada de texto, e não puderam ser processados, pois o sistema não realiza reconhecimento óptico de caracteres. Os 120 restantes seguem o modelo do SIGAA e foram todos processados. Os planos foram identificados por códigos de S1-P01 a S4-P28, em que S1 a S4 indicam o semestre, e os resultados anonimizados estão no arquivo \texttt{dados/validacoes\_2026-11-04.csv} do repositório.
+
+\subsection{Resultados por semestre}
+
+A Figura \ref{fig:semestres} apresenta o status geral dos planos em cada semestre. No conjunto, 36 planos (30,0\%) foram considerados conformes, 21 (17,5\%) pendentes e 63 (52,5\%) reprovados. A proporção de planos reprovados variou entre 41,2\%, em 2024/2, e 65,5\%, em 2025/1.
+
+\begin{figure}[htbp]
+\centering
+\caption{Status geral dos planos por semestre}
+\label{fig:semestres}
+\input{figuras/grafico-semestres}
+\legend{Fonte: Elaborado pelo autor (2026), a partir da execução de 04/11/2026.}
+\end{figure}
+
+O padrão observado em 2024/1 se repete nos demais semestres: o horário de atendimento é, de longe, o critério com mais apontamentos, não conforme em 69 dos 120 planos (57,5\%), seguido pelas referências, incompletas em 17 planos, e pelos objetivos específicos, com 16 apontamentos. Em 43 planos, o horário de atendimento é a única não conformidade. Identificação e objetivo geral foram considerados conformes em todos os planos, e metodologia, cronograma e coerência tiveram no máximo três apontamentos cada.
+
+\subsection{Horário de atendimento e referência a páginas externas}
+
+A ampliação revelou uma mudança na forma de preencher o horário de atendimento. Em 2024/1, os planos não conformes tinham, com uma exceção, o campo vazio. A partir de 2024/2, muitos docentes passaram a preenchê-lo apenas com uma referência externa, em geral o endereço da página em que o campus publica os planos de trabalho docente (\texttt{videira.ifc.edu.br/ptd-e-rtd}), sem indicar dia nem horário. A Tabela \ref{tab:horario-semestres} resume essa mudança.
+
+\begin{table}[H]
+\centering
+\caption{Conteúdo do campo de horário de atendimento nos planos não conformes}
+\label{tab:horario-semestres}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\rowcolor[HTML]{EFEFEF}
+\textbf{Conteúdo do campo} & \textbf{2024/1} & \textbf{2024/2} & \textbf{2025/1} & \textbf{2025/2} & \textbf{Total} \\ \midrule
+Vazio & 15 & 8 & 5 & 7 & 35 \\
+Endereço da página de PTD & 0 & 6 & 13 & 10 & 29 \\
+Outra referência externa (``conforme horário divulgado'') & 1 & 1 & 3 & 0 & 5 \\ \midrule
+\textbf{Total de planos não conformes} & \textbf{16} & \textbf{15} & \textbf{21} & \textbf{17} & \textbf{69} \\ \bottomrule
+\end{tabular}
+\legend{Fonte: Elaborado pelo autor (2026).}
+\end{table}
+
+Essa mudança tem dois efeitos sobre a avaliação. O primeiro é sobre o oráculo estrutural da Seção \ref{sec:res-oraculo}, que considera conforme qualquer campo preenchido. Sobre os 120 planos, o sistema manteve \textit{recall} de 100\%, mas a precisão em relação a esse oráculo caiu para 50,7\% e o Kappa de Cohen para 0,47, porque os 34 campos com referência externa contam como falsos positivos. Conferidos um a um, porém, nenhum desses 34 campos informa dia ou horário, de modo que todos são não conformes pela regra do critério (Tabela \ref{tab:criterios}), e todos os 51 planos considerados conformes informam dia ou horário explicitamente. Pela regra, o sistema acertou a conformidade do horário de atendimento nos 120 planos. Repete-se, contudo, o erro de categoria já observado no P19: em 33 dos 34 campos com referência externa, o modelo atribuiu AUSENTE, quando deveria atribuir INCOMPLETO. O episódio mostra que um oráculo estrutural válido em um semestre pode deixar de sê-lo quando a prática de preenchimento muda, e reforça a necessidade da anotação humana prevista no protocolo.
+
+O segundo efeito é normativo. A Organização Didática exige que o plano informe o horário de atendimento \cite{ifc2022}, mas não diz se uma referência à página de PTD do campus atende a essa exigência. A decisão cabe à coordenação e ao NDE, e o impacto é grande: se a referência externa fosse aceita, o número de planos reprovados nos quatro semestres cairia de 63 para 30, e o de planos conformes subiria de 36 para 63. A regra do critério pode ser ajustada no \textit{prompt} em qualquer dos dois sentidos, mas a escolha é institucional, e não técnica.
+
+\subsection{Reprodutibilidade e desempenho}
+
+Os 29 planos de 2024/1 foram processados novamente nessa execução, com a mesma configuração de inferência, o que permitiu medir a reprodutibilidade dos resultados. Das 377 classificações (12 critérios e o status geral de cada plano), 374 (99,2\%) foram idênticas às da execução de 19 de outubro. As três diferenças envolvem, mais uma vez, a escolha entre INCOMPLETO e AUSENTE e mudaram o status geral de um plano, o P20, de REPROVADO para PENDENTE.
+
+O desempenho, por outro lado, foi bem inferior ao da Seção \ref{sec:res-desempenho}. Com outros programas abertos ocupando parte da memória da GPU, o Ollama alocou 14\% do modelo na CPU, contra 8\% na execução de outubro, e cada plano passou a levar de 30 a 60 segundos de inferência. Essa lentidão expôs uma fragilidade do fluxo: o nó de requisição envia um plano por segundo dentro de cada bloco de 10, sem aguardar a resposta anterior, e o servidor de inferência os enfileira. Com 11,5 segundos por plano, o último do bloco termina antes do tempo limite de 180 segundos; com 30 segundos ou mais, não termina. Na primeira tentativa, 55 planos receberam o status ERRO por estouro do tempo limite. Esses planos foram reprocessados com o tempo limite ampliado para 900 segundos, e todos foram avaliados. O episódio mostra que o controle de concorrência descrito na Tabela \ref{tab:falhas} depende do desempenho do equipamento, e que o fluxo deveria aguardar cada resposta antes de enviar o plano seguinte, o que é indicado como trabalho futuro.
+
 \section{Discussão}
 \label{sec:res-discussao}
 
@@ -163,6 +213,6 @@ Quanto à qualidade da triagem, o sistema não deixou de apontar nenhuma das nã
 
 Quanto à divisão de trabalho entre regras e modelo, os resultados confirmam a decisão de projeto. Os critérios mais objetivos, como a contagem de referências, tornaram-se exatos quando passaram a ser verificados por código, enquanto, nos critérios interpretativos, todos os apontamentos feitos pelo modelo foram confirmados na verificação, inclusive o de coerência. Ao mesmo tempo, o falso negativo do P05 mostra que as regras determinísticas também precisam ser validadas: uma regra simples demais (``preenchido é conforme'') introduziu um erro que o modelo, no mesmo plano, não cometeu nos demais campos com texto provisório. A combinação mais robusta, apontada como trabalho futuro, é usar regras para detectar campos vazios ou provisórios, atribuindo-lhes AUSENTE de forma determinística, e reservar o modelo para julgar a qualidade dos campos preenchidos.
 
-Do ponto de vista da gestão do curso, o sistema evidenciou um problema concreto e sistemático, a ausência do horário de atendimento em mais da metade dos planos, que pode ser tratado com uma orientação aos docentes no início do semestre. Esse tipo de diagnóstico agregado, difícil de obter em uma conferência manual plano a plano, ilustra o potencial da ferramenta para apoiar ações da coordenação e do NDE, em linha com as aplicações de IA na gestão educacional descritas por \citeonline{Sposato2025}.
+Do ponto de vista da gestão do curso, o sistema evidenciou um problema concreto e sistemático, a falta do horário de atendimento em mais da metade dos planos, que se manteve nos quatro semestres analisados e que, a partir de 2024/2, passou a envolver também a substituição do horário por uma referência à página de PTD do campus. O primeiro caso pode ser tratado com uma orientação aos docentes no início do semestre; o segundo exige antes uma definição do NDE sobre o que conta como horário informado. Esse tipo de diagnóstico agregado, difícil de obter em uma conferência manual plano a plano, ilustra o potencial da ferramenta para apoiar ações da coordenação e do NDE, em linha com as aplicações de IA na gestão educacional descritas por \citeonline{Sposato2025}.
 
-É importante delimitar o alcance desses resultados. A concordância foi medida com um oráculo estrutural em um único critério e completada pela verificação dos apontamentos do sistema, o que permite estimar a precisão dos apontamentos, mas não o \textit{recall} nos critérios interpretativos: um plano cuja metodologia fosse inadequada e tivesse sido considerada OK pelo sistema não seria detectado por esse procedimento. A estimativa completa exige a anotação de todos os critérios por avaliadores humanos, conforme o protocolo da Seção \ref{sec:protocolo}. Além disso, o corpus de 29 planos, de um único curso e semestre, limita a generalização dos números obtidos.
+É importante delimitar o alcance desses resultados. A concordância foi medida com um oráculo estrutural em um único critério e completada pela verificação dos apontamentos do sistema, o que permite estimar a precisão dos apontamentos, mas não o \textit{recall} nos critérios interpretativos: um plano cuja metodologia fosse inadequada e tivesse sido considerada OK pelo sistema não seria detectado por esse procedimento. A estimativa completa exige a anotação de todos os critérios por avaliadores humanos, conforme o protocolo da Seção \ref{sec:protocolo}. Além disso, a avaliação detalhada foi feita sobre os 29 planos de 2024/1; a ampliação para quatro semestres confirmou a estabilidade do sistema e o padrão de não conformidades, mas segue restrita a um único curso.
